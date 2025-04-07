@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 
 // Load JSON data
-const beef = require('./data/beef.json');
+const beef = require('./data/products.json');
 const pork = require('./data/pork.json');
 
 app.use(cors());
