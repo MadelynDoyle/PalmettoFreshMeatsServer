@@ -1,0 +1,42 @@
+[
+    {
+        "_id" : "1",
+        "name" : "Porkchops",
+        "cutDescription" : "A loin cut near the spine of the pig.",
+        "averageWeight" : "10-12 ounces",
+        "pricePerPound" : "$2.98 per pound",
+        "image" : "images/Porkchops2.jpg"
+    },
+    {
+        "_id" : "2",
+        "name" : "Ground Pork",
+        "cutDescription" : "Made up of teh trimmings of the hog.",
+        "averageWeight" : "1 to 2 pound packages",
+        "pricePerPound" : "$4.99 per pound",
+        "image" : "images/GroundPork.jpg"
+    },
+    {
+        "_id" : "3",
+        "name" : "Bacon",
+        "cutDescription" : "Made from the belly of the hog.",
+        "averageWeight" : "1 pound packages",
+        "pricePerPound" : "$7.99 per pound",
+        "image" : "images/Bacon.jpg"
+    },
+    {
+        "_id" : "4",
+        "name" : "Fat Back",
+        "cutDescription" : "Taken from along the backbone of the hog.",
+        "averageWeight" : "1 to 2 pound packages",
+        "pricePerPound" : "$5.00 per pound",
+        "image" : "images/PorkFatBack.jpg"
+    },
+    {
+        "_id" : "5",
+        "name" : "Pork Tenderloin",
+        "cutDescription" : "From the muscle that rund along the backbone of the hog.",
+        "averageWeight" : "1 pound packages",
+        "pricePerPound" : "$6.25 per pound",
+        "image" : "images/PorkTenderloin.jpg"
+    }
+]

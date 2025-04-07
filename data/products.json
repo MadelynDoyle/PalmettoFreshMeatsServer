@@ -1,0 +1,43 @@
+[
+    {
+        "_id" : "1",
+        "name" : "Brisket",
+        "cutDescription" : "From the brest or lower chest of the cow",
+        "averageWeight" : "10 to 16 pounds",
+        "pricePerPound" : "$10.99 per pound",
+        "image" : "images/Brisket.jpg"
+    },
+    {
+        "_id" : "2",
+        "name" : "Hanger Steak",
+        "cutDescription" : "Known as the butcher's steak because there is only one per cow.",
+        "averageWeight" : "2 to 3 pounds",
+        "pricePerPound" : "$16.49 per pound",
+        "image" : "images/HangerSteak.jpeg"
+    },
+    {
+        "_id" : "3",
+        "name" : "Short Ribs",
+        "cutDescription" : "Taken from the rib of the cow.",
+        "averageWeight" : "2 to 3 pounds",
+        "pricePerPound" : "$8.29 per pound",
+        "image" : "images/BeefShortRibs.jpg"
+    },
+    {
+        "_id" : "4",
+        "name" : "Cubed Steak",
+        "cutDescription" : "Taken from the top sirloin and tenderized.",
+        "averageWeight" : "1 to 2 pounds per package",
+        "pricePerPound" : "$8.49 per pound",
+        "image" : "images/CubedSteak.jpg"
+    },
+    {
+        "_id" : "5",
+        "name" : "Chuck Roast",
+        "cutDescription" : "A cut of beef from the shoulder or neck of the cow.",
+        "averageWeight" : "2 to 3 pounds per package",
+        "pricePerPound" : "$10.49 per pound",
+        "image" : "images/ChuckRoast.jpg"
+    }
+
+]
