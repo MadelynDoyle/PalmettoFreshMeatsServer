@@ -1,32 +1,27 @@
-// server.js
 const express = require('express');
+const Joi = require('joi');
 const cors = require('cors');
 const app = express();
-
-// Load JSON data
-const beef = require('./data/products.json');
-const pork = require('./data/pork.json');
-
+app.use(express.json()); // Needed to parse JSON body
 app.use(cors());
-app.use(express.static('public')); // for serving index.html
 
-// Routes
-app.get('/api/beef', (req, res) => {
-  res.json(beef);
+let beef = require('./data/products.json'); // In-memory data
+
+// Joi schema
+const beefSchema = Joi.object({
+  name: Joi.string().min(1).required(),
+  price: Joi.number().positive().required(),
+  image: Joi.string().uri().required()
 });
 
-app.get('/api/pork', (req, res) => {
-  res.json(pork);
-});
+// POST route to add beef product
+app.post('/api/beef', (req, res) => {
+  const { error, value } = beefSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
 
-// Home route with a simple API list
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  const newProduct = { ...value, _id: Date.now().toString() }; // Simulate ID
+  beef.push(newProduct);
+  res.status(201).json(newProduct);
 });
-
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
-
