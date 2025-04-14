@@ -2,7 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const cors = require('cors');
 const app = express();
-app.use(express.json()); // Needed to parse JSON body
+app.use(express.json()); 
 app.use(cors());
 
 let beef = require('./data/products.json'); // In-memory data
@@ -21,7 +21,7 @@ app.post('/api/beef', (req, res) => {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  const newProduct = { ...value, _id: Date.now().toString() }; // Simulate ID
+  const newProduct = { ...value, _id: Date.now().toString() }; 
   beef.push(newProduct);
   res.status(201).json(newProduct);
 });
