@@ -175,19 +175,41 @@ app.post("/api/prok", upload.single("img"), (req,res)=>{
 
 
 
+app.put("/api/beef/:id", (req, res) => {
+  const { id } = req.params;
+  const result = validateProducts(req.body);
+  if (result.error) return res.status(400).send(result.error.details[0].message);
+
+  const index = Products.findIndex(p => p._id == id);
+  if (index === -1) return res.status(404).send("Product not found.");
+
+  Products[index] = { ...Products[index], ...req.body, _id: id };
+  res.send(Products[index]);
+});
+
+app.delete("/api/beef/:id", (req, res) => {
+  const { id } = req.params;
+  const index = Products.findIndex(p => p._id == id);
+  if (index === -1) return res.status(404).send("Product not found.");
+
+  const deleted = Products.splice(index, 1);
+  res.send(deleted[0]);
+});
+
 
 const validateProducts = (product) => {
   const schema = Joi.object({
-      _id:Joi.allow(""),
-      name:Joi.string().min(3).required(),
-      cutDescription:Joi.number().required().min(0),
-      averageWeight:Joi.number().required().min(0),
-      pricePerPound:Joi.number().required().min(0),
-
+    _id: Joi.allow(""),
+    name: Joi.string().min(3).required(),
+    cutDescription: Joi.string().required(),
+    averageWeight: Joi.string().required(),
+    pricePerPound: Joi.string().required(),
+    image: Joi.string().required()
   });
 
   return schema.validate(product);
 };
+
 
 const validatePork = (pork) => {
   const schema = Joi.object({
