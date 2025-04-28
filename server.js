@@ -6,6 +6,8 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
+const mongoose = require("mongoose");
+
 
 
 mongoose.connect("mongodb+srv://Administrator:RMFPassword@rmfinder.73vke.mongodb.net/RoommateFinderData");
