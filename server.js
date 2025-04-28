@@ -48,17 +48,24 @@ app.post("/api/beef", upload.single("img"), async (req, res) => {
   const result = validateProducts(req.body);
   if (result.error) return res.status(400).send(result.error.details[0].message);
 
-  const beef = new Beef({
-    name: req.body.name,
-    cutDescription: req.body.cutDescription,
-    averageWeight: req.body.averageWeight,
-    pricePerPound: req.body.pricePerPound,
-    image: req.file ? "images/" + req.file.filename : ""
-  });
+  try {
+    const beef = new Beef({
+      name: req.body.name,
+      cutDescription: req.body.cutDescription,
+      averageWeight: req.body.averageWeight,
+      pricePerPound: req.body.pricePerPound,
+      image: req.file ? "images/" + req.file.filename : ""
+    });
 
-  await beef.save();
-  res.send(beef);
+    const savedBeef = await beef.save(); // Save and catch any errors
+
+    res.status(201).send(savedBeef);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error saving beef product" });
+  }
 });
+
 
 
 app.post("/api/pork", upload.single("img"), async (req, res) => {
@@ -113,12 +120,13 @@ const validateProducts = (product) => {
     name: Joi.string().min(3).required(),
     cutDescription: Joi.string().required(),
     averageWeight: Joi.string().required(),
-    pricePerPound: Joi.string().required(),
+    pricePerPound: Joi.string().required(), 
     image: Joi.string().allow("")
   });
 
   return schema.validate(product);
 };
+
 
 const validatePork = (pork) => {
   const schema = Joi.object({
