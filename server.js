@@ -7,6 +7,13 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
 
+
+mongoose.connect("mongodb+srv://Administrator:RMFPassword@rmfinder.73vke.mongodb.net/RoommateFinderData");
+
+const Beef = require("./models/Beef");
+const Pork = require("./models/Pork");
+
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/images/");
@@ -110,67 +117,51 @@ let Pork = [
   }
 ]
 
-app.get("/api/beef", (req, res)=>{
-  res.send(Products);
+app.get("/api/beef", async (req, res) => {
+  const beef = await Beef.find();
+  res.send(beef);
 });
 
-app.get("/api/pork", (req, res)=>{
-  res.send(Pork);
+app.get("/api/pork", async (req, res) => {
+  const pork = await Pork.find();
+  res.send(pork);
 });
 
-app.post("/api/beef", upload.single("img"), (req,res)=>{
+
+app.post("/api/beef", upload.single("img"), async (req, res) => {
   const result = validateProducts(req.body);
+  if (result.error) return res.status(400).send(result.error.details[0].message);
 
+  const beef = new Beef({
+    name: req.body.name,
+    cutDescription: req.body.cutDescription,
+    averageWeight: req.body.averageWeight,
+    pricePerPound: req.body.pricePerPound,
+    image: req.file ? "images/" + req.file.filename : ""
+  });
 
-  if(result.error){
-      console.log("I have an error");
-      res.status(400).send(result.error.deatils[0].message);
-      return;
-  }
-
-  const product = {
-      _id: Products.length,
-      name:req.body.name,
-      cutDescription:req.body.cutDescription,
-      averageWeight:req.body.averageWeight,
-      pricePerPound:req.body.pricePerPound,
-  };
-
-  //adding image
-  if(req.file){
-      product.image = req.file.filename;
-  }
-
-  products.push(product);
-  res.status(200).send(product);
+  await beef.save();
+  res.send(beef);
 });
 
-app.post("/api/prok", upload.single("img"), (req,res)=>{
+
+app.post("/api/pork", upload.single("img"), async (req, res) => {
   const result = validatePork(req.body);
+  if (result.error) return res.status(400).send(result.error.details[0].message
+  );
 
+  const pork = new Pork({
+    name: req.body.name,
+    cutDescription: req.body.cutDescription,
+    averageWeight: req.body.averageWeight,
+    pricePerPound: req.body.pricePerPound,
+    image: req.file ? "images/" + req.file.filename : ""
+  });
 
-  if(result.error){
-      console.log("I have an error");
-      res.status(400).send(result.error.deatils[0].message);
-      return;
-  }
-
-  const pork = {
-      _id: Pork.length,
-      name:req.body.name,
-      cutDescription:req.body.cutDescription,
-      averageWeight:req.body.averageWeight,
-      pricePerPound:req.body.pricePerPound,
-  };
-
-  //adding image
-  if(req.file){
-      pork.image = req.file.filename;
-  }
-
-  pork.push(pork);
-  res.status(200).send(pork);
+  await pork.save();
+  res.send(pork);
 });
+
 
 
 
@@ -199,30 +190,28 @@ app.delete("/api/beef/:id", (req, res) => {
 
 const validateProducts = (product) => {
   const schema = Joi.object({
-    _id: Joi.allow(""),
     name: Joi.string().min(3).required(),
     cutDescription: Joi.string().required(),
     averageWeight: Joi.string().required(),
     pricePerPound: Joi.string().required(),
-    image: Joi.string().required()
+    image: Joi.string().allow("")
   });
 
   return schema.validate(product);
 };
 
-
 const validatePork = (pork) => {
   const schema = Joi.object({
-      _id:Joi.allow(""),
-      name:Joi.string().min(3).required(),
-      cutDescription:Joi.number().required().min(0),
-      averageWeight:Joi.number().required().min(0),
-      pricePerPound:Joi.number().required().min(0),
-
+    name: Joi.string().min(3).required(),
+    cutDescription: Joi.string().required(),
+    averageWeight: Joi.string().required(),
+    pricePerPound: Joi.string().required(),
+    image: Joi.string().allow("")
   });
 
   return schema.validate(pork);
 };
+
 
 app.listen(3001, ()=>{
   console.log("I'm listening");
